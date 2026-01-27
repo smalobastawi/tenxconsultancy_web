@@ -78,17 +78,21 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified blog post.
      */
-    public function edit(BlogPost $blogPost)
+    public function edit($id)
     {
+
         $categories = Category::all();
+        $blogPost = BlogPost::findOrFail($id);
+
         return view('admin.blog.edit', compact('blogPost', 'categories'));
     }
 
     /**
      * Update the specified blog post.
      */
-    public function update(Request $request, BlogPost $blogPost)
+    public function update(Request $request,  $id)
     {
+        $blogPost = BlogPost::findOrFail($id);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:blog_posts,slug,' . $blogPost->id,
@@ -99,6 +103,7 @@ class BlogController extends Controller
             'status' => 'required|in:draft,published,archived',
             'published_at' => 'nullable|date',
         ]);
+
 
         // Handle featured image upload
         if ($request->hasFile('featured_image')) {

@@ -23,13 +23,31 @@ Route::get('/blog/{blogPost}', [BlogController::class, 'show'])->name('blog.show
 Route::get('/blog/category/{category}', [BlogController::class, 'category'])->name('blog.category');
 
 // Public Announcement Routes
-Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');
+Route::get('/announcements/public', [AnnouncementController::class, 'index'])->name('announcements.index');
 Route::get('/announcements/{announcement}', [AnnouncementController::class, 'show'])->name('announcements.show');
 
 // Admin Routes (Protected)
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('blog', AdminBlogController::class);
-    Route::resource('announcements', AdminAnnouncementController::class);
+
+    // Blog Routes
+    Route::get('blog', [AdminBlogController::class, 'index'])->name('blog.index');
+    Route::get('blog/create', [AdminBlogController::class, 'create'])->name('blog.create');
+    Route::post('blog', [AdminBlogController::class, 'store'])->name('blog.store');
+    Route::get('blog/{blog}/show', [AdminBlogController::class, 'show'])->name('blog.show');
+    Route::get('blog/{blog}/edit', [AdminBlogController::class, 'edit'])->name('blog.edit');
+    Route::put('blog/{blog}/update', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::patch('blog/{blog}/update', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::delete('blog/{blog}/destroy', [AdminBlogController::class, 'destroy'])->name('blog.destroy');
+
+    // Announcement Routes
+    Route::get('announcements/get', [AdminAnnouncementController::class, 'index'])->name('announcements.index');
+    Route::get('announcements/create', [AdminAnnouncementController::class, 'create'])->name('announcements.create');
+    Route::post('announcements/create', [AdminAnnouncementController::class, 'store'])->name('announcements.store');
+    Route::get('announcements/{announcement}/store', [AdminAnnouncementController::class, 'show'])->name('announcements.show');
+    Route::get('announcements/{announcement}/edit', [AdminAnnouncementController::class, 'edit'])->name('announcements.edit');
+    Route::put('announcements/{announcement}/update', [AdminAnnouncementController::class, 'update'])->name('announcements.update');
+    Route::patch('announcements/{announcement}/postUpdate', [AdminAnnouncementController::class, 'update'])->name('announcements.update');
+    Route::delete('announcements/{announcement}/destroy', [AdminAnnouncementController::class, 'destroy'])->name('announcements.destroy');
 });
 
 // Home Route

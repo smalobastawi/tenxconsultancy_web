@@ -70,8 +70,8 @@
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.blog.edit', ['blog' => $post->id]) }}"
-                                    class="btn btn-outline-primary" title="Edit">
+                                <a href="{{ route('admin.blog.edit', $post->id) }}" class="btn btn-outline-primary"
+                                    title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <a href="{{ route('blog.show', $post) }}" target="_blank" class="btn btn-outline-info"

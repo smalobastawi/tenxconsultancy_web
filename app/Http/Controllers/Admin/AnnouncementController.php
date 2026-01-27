@@ -68,16 +68,19 @@ class AnnouncementController extends Controller
     /**
      * Show the form for editing the specified announcement.
      */
-    public function edit(Announcement $announcement)
+    public function edit($id)
     {
+        $announcement = Announcement::findOrFail($id);
         return view('admin.announcements.edit', compact('announcement'));
     }
 
     /**
      * Update the specified announcement.
      */
-    public function update(Request $request, Announcement $announcement)
+    public function update(Request $request, $id)
     {
+        $announcement = Announcement::findOrFail($id);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:announcements,slug,' . $announcement->id,

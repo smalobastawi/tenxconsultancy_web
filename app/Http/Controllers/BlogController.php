@@ -61,7 +61,7 @@ class BlogController extends Controller
             ->where('id', '!=', $blogPost->id)
             ->where(function ($query) use ($blogPost) {
                 $query->where('category_id', $blogPost->category_id)
-                    ->orWhereRaw('MATCH(title, content) AGAINST(? IN NATURAL LANGUAGE MODE)', [$blogPost->title]);
+                    ->orWhere('title', 'like', '%' . $blogPost->title . '%');
             })
             ->limit(3)
             ->get();

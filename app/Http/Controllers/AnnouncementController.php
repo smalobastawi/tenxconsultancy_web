@@ -21,7 +21,8 @@ class AnnouncementController extends Controller
             $query->where('priority', $request->priority);
         }
 
-        $announcements = $query->paginate(10);
+        $announcements = Announcement::paginate(10);
+
 
         return view('announcements.index', compact('announcements'));
     }

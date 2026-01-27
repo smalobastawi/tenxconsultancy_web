@@ -133,6 +133,9 @@
                             class="nav-item nav-link {{ request()->routeIs('announcements.*') ? 'active' : '' }}">Announcements</a>
                         <a href="{{ route('contact') }}"
                             class="nav-item nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contacts</a>
+                        <a href="{{ route('login') }}"
+                            class="nav-item nav-link {{ request()->routeIs('login') ? 'active' : '' }}"><i
+                                class="fas fa-lock me-1"></i> Admin</a>
                     </div>
                 </div>
                 <div class="d-none d-xl-flex flex-shrink-0 ps-4">
