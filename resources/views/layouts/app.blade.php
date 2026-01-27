@@ -127,6 +127,10 @@
                         </div>
                         <a href="{{ route('resources') }}"
                             class="nav-item nav-link {{ request()->routeIs('resources') ? 'active' : '' }}">Resources</a>
+                        <a href="{{ route('blog.index') }}"
+                            class="nav-item nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">Blog</a>
+                        <a href="{{ route('announcements.index') }}"
+                            class="nav-item nav-link {{ request()->routeIs('announcements.*') ? 'active' : '' }}">Announcements</a>
                         <a href="{{ route('contact') }}"
                             class="nav-item nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contacts</a>
                     </div>
