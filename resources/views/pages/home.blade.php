@@ -243,7 +243,7 @@
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
                     <div class="team-item">
                         <div class="team-img">
-                            <img src="{{ asset('img/baashe-staff.jpeg') }}" class="img-fluid rounded-top w-100"
+                            <img src="{{ asset('img/baashe-staff1.jpeg') }}" class="img-fluid rounded-top w-100"
                                 alt="" />
                             <div class="team-icon">
                                 <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i

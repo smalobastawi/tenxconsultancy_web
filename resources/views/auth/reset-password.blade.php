@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin Login - 10X Consultancy</title>
+    <title>Reset Password - 10X Consultancy</title>
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
             justify-content: center;
         }
 
-        .login-container {
+        .reset-container {
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -38,31 +38,38 @@
             margin: 20px;
         }
 
-        .login-header {
+        .reset-header {
             background: linear-gradient(135deg, #0071c5 0%, #005a9e 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
         }
 
-        .login-header img {
-            max-width: 80px;
+        .reset-header i {
+            font-size: 3rem;
             margin-bottom: 15px;
-            border-radius: 10px;
         }
 
-        .login-header h3 {
+        .reset-header h3 {
             margin: 0;
             font-weight: 600;
         }
 
-        .login-header p {
+        .reset-header p {
             margin: 10px 0 0;
             opacity: 0.9;
+            font-size: 0.95rem;
         }
 
-        .login-body {
+        .reset-body {
             padding: 40px 30px;
+        }
+
+        .info-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
         .form-floating {
@@ -93,7 +100,23 @@
             padding-left: 45px;
         }
 
-        .btn-login {
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+            padding-left: 5px;
+        }
+
+        .password-requirements ul {
+            margin: 5px 0 0 15px;
+            padding: 0;
+        }
+
+        .password-requirements li {
+            margin-bottom: 2px;
+        }
+
+        .btn-reset {
             background: linear-gradient(135deg, #0071c5 0%, #005a9e 100%);
             border: none;
             border-radius: 10px;
@@ -103,24 +126,24 @@
             transition: all 0.3s;
         }
 
-        .btn-login:hover {
+        .btn-reset:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(0, 113, 197, 0.4);
         }
 
-        .login-footer {
+        .reset-footer {
             text-align: center;
             padding: 20px 30px;
             background: #f8f9fa;
             border-top: 1px solid #e9ecef;
         }
 
-        .login-footer a {
+        .reset-footer a {
             color: #0071c5;
             text-decoration: none;
         }
 
-        .login-footer a:hover {
+        .reset-footer a:hover {
             text-decoration: underline;
         }
 
@@ -136,21 +159,14 @@
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <i class="fas fa-cube fa-3x mb-3"></i>
-            <h3>10X Admin</h3>
-            <p>Sign in to manage your blog</p>
+    <div class="reset-container">
+        <div class="reset-header">
+            <i class="fas fa-lock"></i>
+            <h3>Reset Password</h3>
+            <p>Create a new secure password</p>
         </div>
 
-        <div class="login-body">
-            @if (session('status'))
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle me-2"></i>
-                    {{ session('status') }}
-                </div>
-            @endif
-
+        <div class="reset-body">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-circle me-2"></i>
@@ -158,13 +174,20 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <p class="info-text">
+                Please enter your new password below. Make sure it's secure and memorable.
+            </p>
+
+            <form method="POST" action="{{ route('password.update') }}">
                 @csrf
+
+                <input type="hidden" name="token" value="{{ $token }}">
 
                 <div class="form-floating position-relative">
                     <i class="fas fa-envelope input-icon"></i>
                     <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                        name="email" placeholder="name@example.com" value="{{ old('email') }}" required autofocus>
+                        name="email" placeholder="name@example.com" value="{{ old('email', $email) }}" required
+                        autofocus>
                     <label for="email">Email address</label>
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -174,34 +197,38 @@
                 <div class="form-floating position-relative">
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                        name="password" placeholder="Password" required>
-                    <label for="password">Password</label>
+                        name="password" placeholder="New Password" required>
+                    <label for="password">New Password</label>
                     @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                        <label class="form-check-label" for="remember">
-                            Remember me
-                        </label>
-                    </div>
-                    <a href="{{ route('password.request') }}" class="text-decoration-none"
-                        style="color: #0071c5; font-size: 0.9rem;">
-                        Forgot Password?
-                    </a>
+                <div class="password-requirements">
+                    <strong>Password must have:</strong>
+                    <ul>
+                        <li>At least 8 characters</li>
+                        <li>Uppercase and lowercase letters</li>
+                        <li>At least one number</li>
+                        <li>At least one special character</li>
+                    </ul>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-login">
-                    <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                <div class="form-floating position-relative mt-3">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                        placeholder="Confirm New Password" required>
+                    <label for="password_confirmation">Confirm New Password</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-reset">
+                    <i class="fas fa-save me-2"></i> Reset Password
                 </button>
             </form>
         </div>
 
-        <div class="login-footer">
-            <a href="{{ route('home') }}"><i class="fas fa-arrow-left me-1"></i> Back to Website</a>
+        <div class="reset-footer">
+            <a href="{{ route('login') }}"><i class="fas fa-arrow-left me-1"></i> Back to Login</a>
         </div>
     </div>
 

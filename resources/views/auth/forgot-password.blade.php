@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin Login - 10X Consultancy</title>
+    <title>Forgot Password - 10X Consultancy</title>
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
             justify-content: center;
         }
 
-        .login-container {
+        .forgot-container {
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -38,31 +38,38 @@
             margin: 20px;
         }
 
-        .login-header {
+        .forgot-header {
             background: linear-gradient(135deg, #0071c5 0%, #005a9e 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
         }
 
-        .login-header img {
-            max-width: 80px;
+        .forgot-header i {
+            font-size: 3rem;
             margin-bottom: 15px;
-            border-radius: 10px;
         }
 
-        .login-header h3 {
+        .forgot-header h3 {
             margin: 0;
             font-weight: 600;
         }
 
-        .login-header p {
+        .forgot-header p {
             margin: 10px 0 0;
             opacity: 0.9;
+            font-size: 0.95rem;
         }
 
-        .login-body {
+        .forgot-body {
             padding: 40px 30px;
+        }
+
+        .info-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
         .form-floating {
@@ -93,7 +100,7 @@
             padding-left: 45px;
         }
 
-        .btn-login {
+        .btn-forgot {
             background: linear-gradient(135deg, #0071c5 0%, #005a9e 100%);
             border: none;
             border-radius: 10px;
@@ -103,24 +110,24 @@
             transition: all 0.3s;
         }
 
-        .btn-login:hover {
+        .btn-forgot:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(0, 113, 197, 0.4);
         }
 
-        .login-footer {
+        .forgot-footer {
             text-align: center;
             padding: 20px 30px;
             background: #f8f9fa;
             border-top: 1px solid #e9ecef;
         }
 
-        .login-footer a {
+        .forgot-footer a {
             color: #0071c5;
             text-decoration: none;
         }
 
-        .login-footer a:hover {
+        .forgot-footer a:hover {
             text-decoration: underline;
         }
 
@@ -129,23 +136,43 @@
             border: none;
         }
 
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
         .invalid-feedback {
             font-size: 0.85rem;
+        }
+
+        .back-to-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-to-login:hover {
+            color: #0071c5;
         }
     </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <i class="fas fa-cube fa-3x mb-3"></i>
-            <h3>10X Admin</h3>
-            <p>Sign in to manage your blog</p>
+    <div class="forgot-container">
+        <div class="forgot-header">
+            <i class="fas fa-key"></i>
+            <h3>Forgot Password?</h3>
+            <p>Reset your admin password</p>
         </div>
 
-        <div class="login-body">
+        <div class="forgot-body">
             @if (session('status'))
-                <div class="alert alert-success">
+                <div class="alert alert-success mb-4">
                     <i class="fas fa-check-circle me-2"></i>
                     {{ session('status') }}
                 </div>
@@ -158,7 +185,11 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <p class="info-text">
+                Enter your email address and we'll send you a link to reset your password.
+            </p>
+
+            <form method="POST" action="{{ route('password.email') }}">
                 @csrf
 
                 <div class="form-floating position-relative">
@@ -171,37 +202,16 @@
                     @enderror
                 </div>
 
-                <div class="form-floating position-relative">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                        name="password" placeholder="Password" required>
-                    <label for="password">Password</label>
-                    @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                        <label class="form-check-label" for="remember">
-                            Remember me
-                        </label>
-                    </div>
-                    <a href="{{ route('password.request') }}" class="text-decoration-none"
-                        style="color: #0071c5; font-size: 0.9rem;">
-                        Forgot Password?
-                    </a>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-login">
-                    <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                <button type="submit" class="btn btn-primary btn-forgot">
+                    <i class="fas fa-paper-plane me-2"></i> Send Reset Link
                 </button>
             </form>
         </div>
 
-        <div class="login-footer">
-            <a href="{{ route('home') }}"><i class="fas fa-arrow-left me-1"></i> Back to Website</a>
+        <div class="forgot-footer">
+            <a href="{{ route('login') }}" class="back-to-login">
+                <i class="fas fa-arrow-left"></i> Back to Login
+            </a>
         </div>
     </div>
 

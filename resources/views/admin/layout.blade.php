@@ -221,6 +221,11 @@
                 class="{{ request()->routeIs('admin.announcements.create') ? 'active' : '' }}">
                 <i class="fas fa-plus-circle"></i> New Announcement
             </a>
+            <hr class="my-2" style="border-color: rgba(255,255,255,0.1);">
+            <a href="{{ route('admin.profile.show') }}"
+                class="{{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
+                <i class="fas fa-user"></i> My Profile
+            </a>
             <a href="{{ url('/') }}" target="_blank">
                 <i class="fas fa-external-link-alt"></i> View Site
             </a>
@@ -232,7 +237,9 @@
         <div class="topbar">
             <h2>@yield('page-title', 'Dashboard')</h2>
             <div class="user-menu">
-                <span><i class="fas fa-user"></i> {{ auth()->user()->name ?? 'Admin' }}</span>
+                <a href="{{ route('admin.profile.show') }}" class="text-decoration-none">
+                    <i class="fas fa-user"></i> {{ auth()->user()->name ?? 'Admin' }}
+                </a>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-outline-danger">

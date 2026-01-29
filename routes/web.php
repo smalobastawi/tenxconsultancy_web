@@ -5,6 +5,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +50,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('announcements/{announcement}/update', [AdminAnnouncementController::class, 'update'])->name('announcements.update');
     Route::patch('announcements/{announcement}/postUpdate', [AdminAnnouncementController::class, 'update'])->name('announcements.update');
     Route::delete('announcements/{announcement}/destroy', [AdminAnnouncementController::class, 'destroy'])->name('announcements.destroy');
+
+    // Profile Routes
+    Route::get('profile', [AdminProfileController::class, 'show'])->name('profile.show');
+    Route::get('profile/change-password', [AdminProfileController::class, 'showChangePasswordForm'])->name('profile.change-password');
+    Route::put('profile/change-password', [AdminProfileController::class, 'updatePassword'])->name('profile.update-password');
 });
 
 // Home Route
@@ -126,3 +133,16 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
     $request->session()->regenerateToken();
     return redirect('/');
 })->name('logout');
+
+// Password Reset Routes
+Route::get('/forgot-password', [PasswordResetController::class, 'showForgotPasswordForm'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])
+    ->name('password.email');
+
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
+    ->name('password.update');
